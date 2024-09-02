@@ -1,39 +1,41 @@
 import "./bootstrap";
+import "../css/app.css";
+
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
-import PrimeVue from "primevue/config";
-import Wind from "./presets/wind";
+import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy";
+import PrimeVue from "primevue/config";
+import Lara from "../presets/aura";
 
-import { Icon } from "@iconify/vue";
-import Button from "primevue/button";
-import Dropdown from "primevue/dropdown";
+// Primevue components
 import InputText from "primevue/inputtext";
+import Button from "primevue/button";
+import Checkbox from "primevue/checkbox";
 
-import Default from "./layouts/Default.vue";
-
-const appName = import.meta.env.VITE_APP_NAME || "Aspire";
+const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
-    resolve: (name) => {
-        const pages = import.meta.glob("./pages/**/*.vue", { eager: true });
-        let page = pages[`./pages/${name}.vue`];
-        page.default.layout = page.default.layout || Default;
-        return page;
-    },
+    resolve: (name) =>
+        resolvePageComponent(
+            `./Pages/${name}.vue`,
+            import.meta.glob("./Pages/**/*.vue")
+        ),
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+        return createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(ZiggyVue)
             .use(PrimeVue, {
                 unstyled: true,
-                pt: Wind,
+                pt: Lara,
             })
-            .use(ZiggyVue)
-            .component("Button", Button)
-            .component("Dropdown", Dropdown)
             .component("InputText", InputText)
-            .component("Icon", Icon)
+            .component("Button", Button)
+            .component("Checkbox", Checkbox)
             .mount(el);
+    },
+    progress: {
+        color: "#4B5563",
     },
 });

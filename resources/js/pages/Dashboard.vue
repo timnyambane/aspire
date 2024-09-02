@@ -1,11 +1,13 @@
 <script setup>
+import AuthenticatedLayout from "../Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
+
+defineOptions({ layout: AuthenticatedLayout });
 </script>
 
 <template>
     <Head title="Dashboard" />
-    <h1>One</h1>
-    <h1>Dashboard</h1>
-    <h1>Dashboard</h1>
-    <h1>Last</h1>
+    <div class="flex">
+        <h1>Dashboard</h1>
+    </div>
 </template>
